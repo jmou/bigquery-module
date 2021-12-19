@@ -1,0 +1,14 @@
+_pos=main
+process=dynamic
+in/=file:external/bigquery/transform/
+in/param/projectid=inline:dbt-tutorial-329716
+in/param/query=inline:SELECT name FROM names WHERE state = "TX" LIMIT 100
+in/param/tables/names=_pos:names:out/table
+
+_pos=names
+process=dynamic
+in/=file:external/bigquery/lift/
+in/param/projectid=inline:bigquery-public-data
+in/param/datasetid=inline:usa_names
+in/param/tableid=inline:usa_1910_2013
+

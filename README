@@ -1,0 +1,3 @@
+go build -ldflags '-s -w'
+
+~/src/bigquery-module/with-creds ~/src/loom/loom run

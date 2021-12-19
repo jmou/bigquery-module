@@ -1,0 +1,13 @@
+_pos=main
+uncacheable=1
+process=command:chmod +x in/driver && in/driver gate
+in/driver=file:driver
+in/table=_pos:create:out/table
+
+_pos=create
+process=command:chmod +x in/driver && in/driver lift
+in/driver=file:driver
+in/projectid=param:out/projectid
+in/datasetid=param:out/datasetid
+in/tableid=param:out/tableid
+
