@@ -1,0 +1,4 @@
+_pos=main
+process=command:exec > out/session && creds="$HOME/src/nodes/state/$(<in/user).json" && echo -ne "credentials=$creds\nprojectid=" && grep '"project_id":' "$creds" | cut -d\" -f4
+in/user=param:out/user
+

@@ -65,6 +65,26 @@ func copyFile(src string, dest string) error {
 	return err
 }
 
+func setupSession() (string, error) {
+	session, err := slurp("in/session")
+	if err != nil {
+		return "", err
+	}
+
+	var projectID string
+	for _, line := range strings.Split(session, "\n") {
+		pieces := strings.SplitN(line, "=", 2)
+		switch pieces[0] {
+		case "credentials":
+			// XXX hacky global environment variable
+			os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", pieces[1])
+		case "projectid":
+			projectID = pieces[1]
+		}
+	}
+	return projectID, nil
+}
+
 func tableResource(table *bigquery.Table) (*ResourceMetadata, error) {
 	// XXX manage Context
 	ctx := context.Background()
@@ -116,6 +136,11 @@ func parseResource(path string) (*Resource, error) {
 }
 
 func queryToTable(projectID string, datasetID string, tableID string, query string) (*bigquery.Table, error) {
+	_, err := setupSession()
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := context.Background()
 
 	client, err := bigquery.NewClient(ctx, projectID)
@@ -150,10 +175,11 @@ func queryToTable(projectID string, datasetID string, tableID string, query stri
 }
 
 func transform() error {
-	projectID, err := slurp("in/projectid")
+	projectID, err := setupSession()
 	if err != nil {
 		return err
 	}
+
 	// XXX make dataset a module dependency
 	datasetID := "knit"
 	tableID := uuid.New().String()
@@ -223,7 +249,11 @@ func gate() error {
 		return err
 	}
 
-	// XXX compare projectid to slurp("in/projectid") ?
+	_, err = setupSession()
+	if err != nil {
+		return err
+	}
+
 	client, err := bigquery.NewClient(ctx, tr.projectID)
 	if err != nil {
 		return err
@@ -263,7 +293,11 @@ func lift() error {
 		return err
 	}
 
-	// XXX compare projectid to slurp("in/projectid") ?
+	_, err = setupSession()
+	if err != nil {
+		return err
+	}
+
 	client, err := bigquery.NewClient(ctx, projectID)
 	if err != nil {
 		return err
@@ -289,7 +323,10 @@ func lift() error {
 	return err
 }
 
-func preview(projectID string, source string) error {
+func preview(credentialsFile string, projectID string, source string) error {
+	// DRY with setupSession
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", credentialsFile)
+
 	ctx := context.Background()
 
 	client, err := bigquery.NewClient(ctx, projectID)
@@ -331,7 +368,7 @@ func main() {
 	case "lift":
 		err = lift()
 	case "preview":
-		err = preview(os.Args[2], os.Args[3])
+		err = preview(os.Args[2], os.Args[3], os.Args[4])
 	}
 	if err != nil {
 		log.Fatalf("error: %v", err)
