@@ -340,6 +340,7 @@ func preview(credentialsFile string, projectID string, source string) error {
 	if err != nil {
 		return err
 	}
+	first := true
 	for {
 		var row []bigquery.Value
 		err := it.Next(&row)
@@ -348,6 +349,18 @@ func preview(credentialsFile string, projectID string, source string) error {
 		}
 		if err != nil {
 			return err
+		}
+		if first {
+			for i, field := range it.Schema {
+				if i == 0 {
+					fmt.Print("[")
+				} else {
+					fmt.Print(" ")
+				}
+				fmt.Print(field.Name)
+			}
+			fmt.Println("]")
+			first = false
 		}
 		// XXX
 		fmt.Println(row)
