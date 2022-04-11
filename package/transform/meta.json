@@ -1,0 +1,33 @@
+{
+    "inputs": [
+        {
+            "path": "in/session",
+            "description": "session",
+            "multi": false,
+            "default": null
+        },
+        {
+            "path": "in/tables/",
+            "description": "tables",
+            "multi": true,
+            "default": [
+                [
+                    "",
+                    null
+                ]
+            ]
+        },
+        {
+            "path": "in/query",
+            "description": "query",
+            "multi": false,
+            "default": "SELECT "
+        }
+    ],
+    "outputs": [
+        {
+            "path": "out/table",
+            "description": "table"
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+{
+    "inputs": [
+        {
+            "path": "in/session",
+            "description": "session",
+            "multi": false,
+            "default": null
+        },
+        {
+            "path": "in/projectid",
+            "description": "projectid",
+            "multi": false,
+            "default": ""
+        },
+        {
+            "path": "in/datasetid",
+            "description": "datasetid",
+            "multi": false,
+            "default": ""
+        },
+        {
+            "path": "in/tableid",
+            "description": "tableid",
+            "multi": false,
+            "default": ""
+        }
+    ],
+    "outputs": [
+        {
+            "path": "out/table",
+            "description": "table"
+        }
+    ]
+}

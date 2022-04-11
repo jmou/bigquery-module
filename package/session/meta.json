@@ -1,0 +1,16 @@
+{
+    "inputs": [
+        {
+            "path": "in/user",
+            "description": "user",
+            "multi": false,
+            "default": ""
+        }
+    ],
+    "outputs": [
+        {
+            "path": "out/session",
+            "description": "session"
+        }
+    ]
+}
