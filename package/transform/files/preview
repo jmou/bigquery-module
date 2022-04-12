@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+while IFS== read -r key value; do
+    declare "attrs_$key=$value"
+done < in/passthrough/table
+# TODO urlescape
+url="https://console.cloud.google.com/bigquery?p=$attrs_projectid&d=$attrs_datasetid&t=$attrs_tableid&page=table"
+
+cp -R in/passthrough/* out/
+mkdir -p out/_skein/preview
+cat > out/_skein/preview/index.html <<EOF
+$attrs_projectid.$attrs_datasetid.$attrs_tableid<br>
+<a href="$url">BigQuery Console</a>
+EOF

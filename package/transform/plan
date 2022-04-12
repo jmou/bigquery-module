@@ -1,3 +1,8 @@
+_pos=preview
+process=command:chmod +x in/preview && in/preview
+in/preview=file:preview
+in/passthrough/=_pos:main:out/
+
 _pos=main
 uncacheable=1
 process=command:chmod +x in/driver && in/driver gate
