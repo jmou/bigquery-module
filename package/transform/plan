@@ -11,9 +11,9 @@ in/session=param:out/session
 in/table=_pos:create:out/table
 
 _pos=create
-process=command:chmod +x in/driver && in/driver transform
+process=command:mkdir -p in/tables && chmod +x in/driver && in/driver transform
 in/driver=file:driver
 in/session=param:out/session
 in/query=param:out/query
-in/tables/=param:out/tables/
+in/tables/?=param:out/tables/
 
