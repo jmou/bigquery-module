@@ -202,18 +202,17 @@ func transform() error {
 			cte += ",\n"
 		}
 		cte += entry.Name()
-		cte += " AS (SELECT * FROM "
+		cte += " AS (SELECT * FROM `"
 		resource, err := parseResource(filepath.Join(dir, entry.Name()))
 		if err != nil {
 			return err
 		}
-		// XXX ` quoting?
 		cte += resource.projectID
 		cte += "."
 		cte += resource.datasetID
 		cte += "."
 		cte += resource.tableID
-		cte += ")"
+		cte += "`)"
 	}
 	cte += "\n\n"
 
